@@ -1,11 +1,8 @@
 package by.uladzimirmakei.hotelbooking.service;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -76,7 +73,10 @@ public class ConnectionPool {
         });
     }
 
-    public void destroyPool() {
-//todo
+    public void destroyPool() throws SQLException {
+        for (Connection c : queue) {
+            c.close();
+        }
+        queue.clear();
     }
 }

@@ -19,9 +19,6 @@ public class ConnectionCreator {
 
     private static ConnectionCreator connectionInstance;
 
-    private ConnectionCreator() {
-    }
-
     static {
         try {
             properties.load(new FileReader(PROPERTIES_PATH));
@@ -33,9 +30,11 @@ public class ConnectionCreator {
         DATABASE_URL = (String) properties.get("db.url");
     }
 
+    private ConnectionCreator() {
+    }
+
     public static ConnectionCreator getInstance() {
         if (!isInitialized.get()) {
-
             try {
                 locker.lock();
                 if (connectionInstance == null) {
