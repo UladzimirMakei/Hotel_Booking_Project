@@ -14,15 +14,14 @@ public class ConnectionPool {
     private static AtomicBoolean isInitialized = new AtomicBoolean(false);
     private static ConnectionPool connectionPool;
     private static final int POOL_SIZE = 4;
-    private ConnectionCreator connectionCreator;
-    private BlockingQueue<Connection> queue;
+    private BlockingQueue<Connection> connectionQueue;
 
     private ConnectionPool() {
-        connectionCreator = ConnectionCreator.getInstance();
-        this.queue = new LinkedBlockingQueue<>();
+        ConnectionCreator connectionCreator = ConnectionCreator.getInstance();
+        this.connectionQueue = new LinkedBlockingQueue<>();
         for (int i = 0; i < POOL_SIZE; i++) {
             try {
-                queue.offer(ConnectionCreator.createConnection());
+                connectionQueue.offer(ConnectionCreator.createConnection());
             } catch (SQLException e) {
                 e.printStackTrace(); //log todo
             }
@@ -31,7 +30,6 @@ public class ConnectionPool {
 
     public static ConnectionPool getInstance() {
         if (!isInitialized.get()) {
-
             try {
                 locker.lock();
                 if (connectionPool == null) {
@@ -48,7 +46,7 @@ public class ConnectionPool {
     public Connection getConnection() {
         Connection connection = null;
         try {
-            connection = queue.take();
+            connection = connectionQueue.take();
         } catch (InterruptedException e) {
             // todo
         }
@@ -57,7 +55,7 @@ public class ConnectionPool {
 
     public void returnConnection(Connection connection) {
         try {
-            queue.put(connection);
+            connectionQueue.put(connection);
         } catch (InterruptedException e) {
             //todo
         }
@@ -74,9 +72,9 @@ public class ConnectionPool {
     }
 
     public void destroyPool() throws SQLException {
-        for (Connection c : queue) {
-            c.close();
+        for (Connection connection : connectionQueue) {
+            connection.close();
         }
-        queue.clear();
+        connectionQueue.clear();
     }
 }

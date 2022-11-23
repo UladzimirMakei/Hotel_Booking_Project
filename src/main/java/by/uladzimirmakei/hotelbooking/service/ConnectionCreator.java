@@ -16,7 +16,6 @@ public class ConnectionCreator {
     private static Lock locker = new ReentrantLock();
     private static AtomicBoolean isInitialized = new AtomicBoolean(false);
     private static final Properties properties = new Properties();
-
     private static ConnectionCreator connectionInstance;
 
     static {
