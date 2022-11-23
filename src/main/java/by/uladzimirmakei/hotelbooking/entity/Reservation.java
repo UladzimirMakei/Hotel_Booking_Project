@@ -7,6 +7,6 @@ import java.io.Serializable;
 @Data
 public class Reservation implements Cloneable, Serializable {
     private long reservationId;
-    private String Surname;
+    private String surname;
     private int apartmentNumber;
 }
