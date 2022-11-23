@@ -33,10 +33,6 @@ public class ConnectionCreator {
         DATABASE_URL = (String) properties.get("db.url");
     }
 
-    public static Connection createConnection() throws SQLException {
-        return DriverManager.getConnection(DATABASE_URL, properties);
-    }
-
     public static ConnectionCreator getInstance() {
         if (!isInitialized.get()) {
 
@@ -51,5 +47,9 @@ public class ConnectionCreator {
             }
         }
         return connectionInstance;
+    }
+
+    public static Connection createConnection() throws SQLException {
+        return DriverManager.getConnection(DATABASE_URL, properties);
     }
 }
