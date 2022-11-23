@@ -2,11 +2,10 @@ package by.uladzimirmakei.hotelbooking.entity;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class Apartment implements Cloneable, Serializable {
+public class Apartment extends Entity {
     private int number;
     private String type;
     private BigDecimal price;
